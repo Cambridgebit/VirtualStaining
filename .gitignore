@@ -1,0 +1,33 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+
+# Envs & IDE
+.venv/
+venv/
+.env
+.env.*
+.DS_Store
+.vscode/
+.idea/
+
+# Checkpoints & results & datasets (large)
+checkpoints/
+results/
+datasets/
+
+# Logs & temp
+*.log
+*.tmp
+
+# Images/outputs heavy
+*.tif
+*.tiff
+
+# Torch weights (consider Git LFS if needed)
+*.pt
+*.pth

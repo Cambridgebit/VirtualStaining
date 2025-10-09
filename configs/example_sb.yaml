@@ -1,0 +1,39 @@
+## Minimal training config for UNSB-SB
+
+# Data
+dataroot: ./datasets/example
+dataset_mode: unaligned
+direction: AtoB
+batch_size: 1
+num_threads: 4
+
+# Model
+model: sb
+input_nc: 3
+output_nc: 3
+ngf: 64
+ndf: 64
+num_timesteps: 5
+embedding_dim: 512
+netG: resnet_9blocks_cond
+netD: basic_cond
+netE: basic_cond
+embedding_type: positional
+normG: instance
+normD: instance
+no_dropout: true
+
+# Train schedule
+n_epochs: 10
+n_epochs_decay: 100
+lr: 0.0002
+beta1: 0.5
+beta2: 0.999
+lr_policy: linear
+lr_decay_iters: 50
+
+# Experiment
+name: example_SB
+checkpoints_dir: ./checkpoints
+display_id: -1  # disable Visdom by default
+
