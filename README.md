@@ -125,11 +125,6 @@ Citation
 If you use UNSB in your research:
 
 ```
-@InProceedings{
-  kim2023unsb,
-  title={Unpaired Image-to-Image Translation via Neural Schrödinger Bridge},
-  author={Beomsu Kim and Gihyun Kwon and Kwanyoung Kim and Jong Chul Ye},
-  booktitle={ICLR},
-  year={2024}
+
 }
 ```
