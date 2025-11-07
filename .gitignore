@@ -15,10 +15,8 @@ venv/
 .vscode/
 .idea/
 
-# Checkpoints & results & datasets (large)
+# Checkpoints (large)
 checkpoints/
-results/
-datasets/
 
 # Logs & temp
 *.log
