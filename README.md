@@ -1,135 +1,45 @@
-﻿UNSB SB Minimal (PyTorch)
-=========================
+﻿# E-UNSB
 
-A minimal, self-contained subset of the UNSB (Unpaired Neural Schrödinger Bridge) codebase for training and testing SB models on unpaired image-to-image translation tasks. It includes the core training/test pipelines, data loaders, models, and practical tools (data slicing/stitching, FID/KID evaluation, large-image inference).
+A streamlined implementation of unpaired image-to-image translation based on Neural Schrödinger Bridge.
 
-Project Structure
-----------------
+## Project Structure
 
 ```
-options/            # CLI options (train/test)
-data/               # datasets and transforms
+options/            # Training/testing command-line options
+data/               # Datasets and transforms
 models/             # SB model and networks
-util/               # utilities (visualizer, html, misc)
-evaluations/        # FID/KID (PyTorch implementation)
-tools/              # data tools: slicing, stitching, large-image test
-configs/            # example training configs
-datasets/           # put your datasets here (trainA/trainB/testA/testB)
-results/            # test outputs
-train.py            # training entry
-test.py             # testing entry
+evaluations/        # FID/KID evaluation
+tools/              # Data processing tools
+train.py            # Training script
+test.py             # Testing script
 ```
 
-Installation
-------------
+## Installation
 
-- Python 3.8+ recommended. Use CUDA-enabled PyTorch for GPU.
-- Create an environment and install dependencies:
-
-```
+```bash
 pip install -r requirements.txt
 ```
 
-Training: Simple Defaults
--------------------------
+## Training
 
-- Minimal run: auto-detect GPU, dataset (first folder under `./datasets` containing `trainA`/`trainB`), and sensible experiment name.
-
-```
-python train.py
-```
-
-- Config-driven (recommended):
-
-```
+```bash
 python train.py --config configs/example_sb.yaml
 ```
 
-- Override config values on the command line:
+## Testing
 
-```
-python train.py --config configs/example_sb.yaml --lr 0.0001 --gpu_ids 0
-```
-
-Key Defaults and Behavior
--------------------------
-
-- `--gpu_ids`: default `auto` (uses GPU 0 if available, else CPU).
-- `--dataroot`: if not set or invalid, auto-picks a dataset under `./datasets` containing `trainA` or `trainB`.
-- `--name`: if left as `experiment_name`, auto-named as `<dataset>_<model>`.
-- Visdom disabled by default (`--display_id -1`). Enable with `--display_id 1` and run a Visdom server if needed.
-
-Testing
--------
-
-```
-python test.py
+```bash
+python test.py --name <experiment_name>
 ```
 
-Saves HTML results under `./results/<name>/<phase>_<epoch>/` with fixed test settings (single thread, batch size 1, ordered, no flip).
+## Evaluation (FID/KID)
 
-Evaluation (FID/KID)
---------------------
-
-- Compute FID and KID:
-
-```
-python -m evaluations.fid_score <fake_dir> <real_dir>
+```bash
+python -m evaluations.fid_score <fake_image_dir> <real_image_dir>
 ```
 
-- Supported inputs:
-  - Directories of images (jpg, jpeg, png, bmp, tif, tiff) for both metrics
-  - Or `.npz` stats (mu, sigma) for FID only (KID requires images)
+## Acknowledgments
 
-- Options:
-  - `--device auto|cpu|cuda|cuda:0` (default: auto)
-  - `--batch-size N` (default: 64)
-  - `--dims {64,192,768,2048}` (default: 2048)
-  - `--no-kid` to skip KID
-  - `--kid-subset-size N` (default: 1000)
-  - `--kid-subsets N` (default: 50)
-  - `--kid-degree D` (default: 3), `--kid-coef0 C` (default: 1.0), `--kid-gamma G` (default: 1/d)
+Our source code is based on [UNSB](https://github.com/cyclomon/UNSB).
 
-- Examples:
-  - `python -m evaluations.fid_score ./results/<name>/test_latest/images/fake_B ./datasets/<data>/testB`
-  - FID using cached stats for real images (no KID): `python -m evaluations.fid_score <fake_dir> ./stats/real_stats.npz --no-kid`
-
-PRDC
-----
-
-```
-python -m evaluations.DC <real_dir> <fake_dir>
-```
-
-Large-Image Inference
----------------------
-
-```
-python tools/test_large_image.py \
-  --dataroot ./datasets/<your_dataset> \
-  --name example_SB --checkpoints_dir ./checkpoints \
-  --mode sb --eval --gpu_ids 0
-```
-
-Requirements
-------------
-
-- Core: `torch`, `torchvision`, `torchaudio`, `numpy`, `pillow`, `tqdm`
-- Visualization/HTML: `visdom`, `dominate`
-- Data/tools: `opencv-python`, `tifffile`, `requests`, `beautifulsoup4`, `lxml`, `scipy`, `scikit-learn`, `packaging`, `GPUtil`
-- Evaluation (optional): `pytorch-fid`
-
-Citation
---------
-
-If you use UNSB in your research:
-
-```
-@InProceedings{
-  kim2023unsb,
-  title={Unpaired Image-to-Image Translation via Neural Schrödinger Bridge},
-  author={Beomsu Kim and Gihyun Kwon and Kwanyoung Kim and Jong Chul Ye},
-  booktitle={ICLR},
-  year={2024}
-}
-```
+We thank [pytorch-fid](https://github.com/mseitzer/pytorch-fid) for FID calculation.
